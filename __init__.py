@@ -31,7 +31,7 @@ def monhistogramme():
     return render_template("histogramme.html")
 
 @app.route("/commits/")
-def MaPremiereAPI():
+def MesCommits():
     return render_template("commits.html")
                                                                                                                                        
 @app.route('/')
