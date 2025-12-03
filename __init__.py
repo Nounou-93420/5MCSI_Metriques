@@ -29,7 +29,10 @@ def mongraphique():
 @app.route("/histogramme/")
 def monhistogramme():
     return render_template("histogramme.html")
-  
+
+@app.route("/commits/")
+def MaPremiereAPI():
+    return render_template("commits.html")
                                                                                                                                        
 @app.route('/')
 def hello_world():
