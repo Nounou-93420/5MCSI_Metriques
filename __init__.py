@@ -40,45 +40,6 @@ def extract_minutes(date_string):
     date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
     minutes = date_object.minute
     return jsonify({'minutes': minutes})
-
-
-@app.route('/commits/')
-def commits_graph():
-    # 1. Appel à l'API GitHub
-    url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
-    response = requests.get(url).json()
-
-    # 2. Extraction des minutes
-    minutes_list = []
-    for item in response:
-        date_string = item["commit"]["author"]["date"]
-        dt = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-        minutes_list.append(dt.minute)
-
-    # 3. Compter les commits par minute
-    commit_counts = {}
-    for m in minutes_list:
-        commit_counts[m] = commit_counts.get(m, 0) + 1
-
-    # 4. Création du graphique
-    plt.figure(figsize=(8, 4))
-    plt.bar(commit_counts.keys(), commit_counts.values())
-    plt.title("Nombre de commits par minute")
-    plt.xlabel("Minute")
-    plt.ylabel("Commits")
-
-    # 5. Convertir en base64
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    img.seek(0)
-    plot_url = base64.b64encode(img.getvalue()).decode()
-
-    # 6. Affichage via template
-    return render_template("commits.html", plot_url=plot_url)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
   
 if __name__ == "__main__":
   app.run(debug=True)
